@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integ snapshot validation 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dArtifactHashE606853E": Object {
+      "Description": "Artifact hash for asset \\"e4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0d\\"",
+      "Type": "String",
+    },
+    "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dS3Bucket265474F5": Object {
+      "Description": "S3 bucket for asset \\"e4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0d\\"",
+      "Type": "String",
+    },
+    "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dS3VersionKeyDECBE358": Object {
+      "Description": "S3 key for asset version \\"e4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0d\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "TidyUpScheduleRule8FBDEDD5": Object {
+      "Properties": Object {
+        "ScheduleExpression": "cron(0 */4 * * ? *)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Ref": "TidyUpStateMachine146B4842",
+            },
+            "Id": "Target0",
+            "RoleArn": Object {
+              "Fn::GetAtt": Array [
+                "TidyUpStateMachineEventsRoleFE76B709",
+                "Arn",
+              ],
+            },
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "TidyUpStateMachine146B4842": Object {
+      "DependsOn": Array [
+        "TidyUpStateMachineRoleDefaultPolicyF8BF288E",
+        "TidyUpStateMachineRole807BA99F",
+      ],
+      "Properties": Object {
+        "DefinitionString": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{\\"StartAt\\":\\"prepare repos\\",\\"States\\":{\\"prepare repos\\":{\\"Type\\":\\"Pass\\",\\"Result\\":{\\"inputForMap\\":[\\"vscode\\",\\"gitpod-workspace\\",\\"github-codespace\\"]},\\"Next\\":\\"Map State\\"},\\"Map State\\":{\\"Type\\":\\"Map\\",\\"End\\":true,\\"OutputPath\\":\\"$\\",\\"Iterator\\":{\\"StartAt\\":\\"LambdaInvoke\\",\\"States\\":{\\"LambdaInvoke\\":{\\"End\\":true,\\"Retry\\":[{\\"ErrorEquals\\":[\\"Lambda.ServiceException\\",\\"Lambda.AWSLambdaException\\",\\"Lambda.SdkClientException\\"],\\"IntervalSeconds\\":2,\\"MaxAttempts\\":6,\\"BackoffRate\\":2}],\\"Type\\":\\"Task\\",\\"Resource\\":\\"arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":states:::lambda:invoke\\",\\"Parameters\\":{\\"FunctionName\\":\\"",
+              Object {
+                "Fn::GetAtt": Array [
+                  "TidyUpTidyUpHandlerFunction84EE1767",
+                  "Arn",
+                ],
+              },
+              "\\",\\"Payload\\":{\\"REPO.$\\":\\"$\\"}}}}},\\"ItemsPath\\":\\"$.inputForMap\\",\\"MaxConcurrency\\":3}}}",
+            ],
+          ],
+        },
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "TidyUpStateMachineRole807BA99F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::StepFunctions::StateMachine",
+    },
+    "TidyUpStateMachineEventsRoleDefaultPolicy917CFC3F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "states:StartExecution",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "TidyUpStateMachine146B4842",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TidyUpStateMachineEventsRoleDefaultPolicy917CFC3F",
+        "Roles": Array [
+          Object {
+            "Ref": "TidyUpStateMachineEventsRoleFE76B709",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TidyUpStateMachineEventsRoleFE76B709": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "events.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TidyUpStateMachineRole807BA99F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "states.",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ".amazonaws.com",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TidyUpStateMachineRoleDefaultPolicyF8BF288E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "TidyUpTidyUpHandlerFunction84EE1767",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TidyUpStateMachineRoleDefaultPolicyF8BF288E",
+        "Roles": Array [
+          Object {
+            "Ref": "TidyUpStateMachineRole807BA99F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TidyUpTidyUpHandlerFunction84EE1767": Object {
+      "DependsOn": Array [
+        "TidyUpTidyUpHandlerFunctionServiceRoleDefaultPolicy13FEA2FA",
+        "TidyUpTidyUpHandlerFunctionServiceRole72EC614E",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dS3Bucket265474F5",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dS3VersionKeyDECBE358",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameterse4c8acde91379257899a83b40ed3f69bd3965966c1b6eedbf74eeaea4ae5bc0dS3VersionKeyDECBE358",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "TidyUpTidyUpHandlerFunctionServiceRole72EC614E",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "TidyUpTidyUpHandlerFunctionServiceRole72EC614E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TidyUpTidyUpHandlerFunctionServiceRoleDefaultPolicy13FEA2FA": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "ecr-public:DescribeImages",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "ecr-public:BatchDeleteImage",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr-public::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":repository/vscode",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "ecr-public:BatchDeleteImage",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr-public::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":repository/gitpod-workspace",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "ecr-public:BatchDeleteImage",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr-public::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":repository/github-codespace",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TidyUpTidyUpHandlerFunctionServiceRoleDefaultPolicy13FEA2FA",
+        "Roles": Array [
+          Object {
+            "Ref": "TidyUpTidyUpHandlerFunctionServiceRole72EC614E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
