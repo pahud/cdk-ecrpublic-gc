@@ -17,7 +17,6 @@
 cdk.context.json
 cdk.out
 dist
-images
 junit.xml
 yarn-error.log
 !.jsii
