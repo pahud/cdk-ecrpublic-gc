@@ -77,7 +77,11 @@
   },
   "bundledDependencies": [],
   "keywords": [
-    "cdk"
+    "cdk",
+    "docker",
+    "ecr",
+    "gc",
+    "repository"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",

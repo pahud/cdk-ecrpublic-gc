@@ -32,6 +32,7 @@ const project = new AwsCdkConstructLibrary({
     distName: 'cdk-ecrpublic-gc',
     module: 'cdk_ecrpublic_gc',
   },
+  keywords: ['cdk','ecr','repository','gc','docker'],
 });
 
 
