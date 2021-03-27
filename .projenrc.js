@@ -24,12 +24,13 @@ const project = new AwsCdkConstructLibrary({
   ],
   devDeps: [
     'aws-sdk',
+    'esbuild',
     'projen-automate-it',
   ],
   dependabot: false,
   publishToPypi: {
     distName: 'cdk-ecrpublic-gc',
-    module: 'cdk_ecrpublic_gc'
+    module: 'cdk_ecrpublic_gc',
   },
 });
 
