@@ -7,7 +7,7 @@ const project = new AwsCdkConstructLibrary({
   description: 'Garbage collector for Amazon ECR public',
   author: 'Pahud Hsieh',
   authorAddress: 'pahudnet@gmail.com',
-  cdkVersion: '1.73.0',
+  cdkVersion: '1.95.1',
   defaultReleaseBranch: 'main',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   name: 'cdk-ecrpublic-gc',
