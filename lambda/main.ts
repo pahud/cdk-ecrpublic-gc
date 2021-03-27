@@ -19,7 +19,6 @@ async function clean(repositoryName: string) {
       ...param,
     });
     console.log(`2next token: ${response.nextToken}`);
-    // if (response.nextToken) console.log(`2next token: ${response.nextToken}`)
   }
 }
 
