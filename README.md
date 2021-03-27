@@ -19,6 +19,9 @@ By default, the state machine will be triggered **every 4 hours** and can be con
 # Sample
 
 ```ts
+import * as cdk from '@aws-cdk/core';
+import { TidyUp } from 'cdk-ecrpublic-gc';
+
 const app = new cdk.App();
 
 const stack = new cdk.Stack(app, 'ecr-public-gc');
