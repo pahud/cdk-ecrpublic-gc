@@ -1,5 +1,4 @@
-const { AwsCdkConstructLibrary } = require('projen');
-const { Automation } = require('projen-automate-it');
+const { AwsCdkConstructLibrary, DependenciesUpgradeMechanism } = require('projen');
 
 const AUTOMATION_TOKEN = 'PROJEN_GITHUB_TOKEN';
 
@@ -25,22 +24,23 @@ const project = new AwsCdkConstructLibrary({
   devDeps: [
     'aws-sdk',
     'esbuild',
-    'projen-automate-it',
   ],
-  dependabot: false,
+  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+    workflowOptions: {
+      labels: ['auto-approve', 'auto-merge'],
+      secret: AUTOMATION_TOKEN,
+    },
+  }),
+  autoApproveOptions: {
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['pahud'],
+  },
   publishToPypi: {
     distName: 'cdk-ecrpublic-gc',
     module: 'cdk_ecrpublic_gc',
   },
   keywords: ['cdk', 'ecr', 'repository', 'gc', 'docker'],
 });
-
-
-const automation = new Automation(project, {
-  automationToken: AUTOMATION_TOKEN,
-});
-automation.projenYarnUpgrade();
-
 
 const common_exclude = ['cdk.out', 'cdk.context.json', 'yarn-error.log'];
 project.npmignore.exclude(...common_exclude);
