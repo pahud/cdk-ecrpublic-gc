@@ -51,7 +51,6 @@ project.package.addField('resolutions', {
 });
 
 
-
 const gitpodPrebuild = project.addTask('gitpod:prebuild', {
   description: 'Prebuild setup for Gitpod',
 });
